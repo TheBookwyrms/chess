@@ -25,7 +25,6 @@ def setup():
 
     board[1] = 1 # sets black pawns
     board[6] = 7 # sets white pawns
-    board[2][0] = 1
 
     board[0][0] = 2 # sets white rook 1
     board[0][1] = 3 # white knight 1
@@ -44,6 +43,9 @@ def setup():
     board[7][5] = 10 # black bishop 2
     board[7][6] = 9 # black knight 2
     board[7][7] = 8 # black rook 2
+
+    board[0][4] = 0
+    board[1][4] = 8
 
 
     white_pieces = np.array([1,2,3,4,5,6])
