@@ -36,7 +36,14 @@ def move_white(col_pos, row_pos, board, white_pieces):
             return board
 
     elif board[row_pos][col_pos] == 3: # if piece is white knight
-        pass
+        board = white_knight_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
+        if (initial_board == board).all():
+            col_pos, row_pos = piece_to_move()
+            board = move_white(col_pos, row_pos, board, white_pieces)
+            return board
+        else:
+            return board
+
     elif board[row_pos][col_pos] == 4: # if piece is white bishop
         pass
     elif board[row_pos][col_pos] == 5: # if piece is white queen
@@ -53,8 +60,8 @@ def white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_p
                 board[row_pos][col_pos] = 0
                 board[target_row][target_col] = 1
                 return board
+            
             elif (row_pos + 2 == target_row) and (target_col == col_pos):
-
                 if not is_friendly_fire(target_col, target_row-1, board, white_pieces):
                     board[row_pos][col_pos] = 0
                     board[target_row][target_col] = 1
@@ -84,7 +91,7 @@ def white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_p
 
         if (col_pos == target_col):
             plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
-            
+
             for i in range(row_pos + plus_minus_one, target_row + 0, plus_minus_one):
                 if int(board[i][target_col]) != 0:
                     print("case 1")
@@ -111,6 +118,23 @@ def white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_p
         else:
             print("invalid move, try again")
             return board    
+    else:
+        print("attacking your own pieces is not permitted, try again")
+        return board    
+
+
+def white_knight_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
+    if not is_friendly_fire(target_col, target_row, board, white_pieces):
+        possibilities = np.array([[1, 2], [1, -2], [-1, 2], [-1, -2], [2, 1], [2, -1], [-2, 1], [-2, -1]])
+
+        for i in possibilities:
+            if (target_row == row_pos + i[0]) and (target_col == col_pos + i[1]):  
+                board[row_pos][col_pos] = 0
+                board[target_row][target_col] = 3
+                return board
+
+        print("invalid move, try again")
+        return board 
     else:
         print("attacking your own pieces is not permitted, try again")
         return board    
