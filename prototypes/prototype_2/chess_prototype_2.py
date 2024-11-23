@@ -61,6 +61,7 @@ def white_turn(white_pieces, black_pieces):
             move_to = np.array([int(i) for i in target])
 
             if not (piece[0] == move_to).all():
+                print("tttttt")
                 move(index, piece, white_pieces, black_pieces, move_to)
             else:
                 print('''\nYou cannot move a piece to where it currently is.\nPlease try again.''')
