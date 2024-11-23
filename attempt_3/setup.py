@@ -25,6 +25,7 @@ def setup():
 
     board[1] = 1 # sets black pawns
     board[6] = 7 # sets white pawns
+    board[2][0] = 1
 
     board[0][0] = 2 # sets white rook 1
     board[0][1] = 3 # white knight 1
