@@ -21,51 +21,28 @@ def move_white(col_pos, row_pos, board, white_pieces):
    
     elif board[row_pos][col_pos] == 1: # if piece is white pawn
         board = white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-        if (initial_board == board).all():
-            col_pos, row_pos = piece_to_move()
-            board = move_white(col_pos, row_pos, board, white_pieces)
-            return board
-        else:
-            return board
 
     elif board[row_pos][col_pos] == 2: # if piece is white rook
         board = white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-        if (initial_board == board).all():
-            col_pos, row_pos = piece_to_move()
-            board = move_white(col_pos, row_pos, board, white_pieces)
-            return board
-        else:
-            return board
 
     elif board[row_pos][col_pos] == 3: # if piece is white knight
         board = white_knight_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-        if (initial_board == board).all():
-            col_pos, row_pos = piece_to_move()
-            board = move_white(col_pos, row_pos, board, white_pieces)
-            return board
-        else:
-            return board
 
     elif board[row_pos][col_pos] == 4: # if piece is white bishop
         board = white_bishop_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-        if (initial_board == board).all():
-            col_pos, row_pos = piece_to_move()
-            board = move_white(col_pos, row_pos, board, white_pieces)
-            return board
-        else:
-            return board
         
     elif board[row_pos][col_pos] == 5: # if piece is white queen
         board = white_queen_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-        if (initial_board == board).all():
-            col_pos, row_pos = piece_to_move()
-            board = move_white(col_pos, row_pos, board, white_pieces)
-            return board
-        else:
-            return board
 
     elif board[row_pos][col_pos] == 6: # is piece is white king
         pass
+
+    if (initial_board == board).all(): # if the board is same as before (move failed), redoes turn
+            col_pos, row_pos = piece_to_move()
+            board = move_white(col_pos, row_pos, board, white_pieces)
+            return board
+    else:
+        return board
 
 
 def white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
