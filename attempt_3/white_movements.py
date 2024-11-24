@@ -2,62 +2,71 @@ import numpy as np
 from common_functions import *
 
 
-def move_white(col_pos, row_pos, board, white_pieces):
+def move(col_pos, row_pos, board, your_pieces):
     position = input("type row and column to move to, as a single number\n")
     lst = [int(i) for i in position]
     target_col = lst[0]-1
     target_row = lst[1]-1
     initial_board = np.copy(board)
 
-    # position_information = (col_pos, row_pos, target_col, target_row)
-    # use this to reduce term overload
-    # ___doesn't work in this form___
+    current = row_pos, col_pos
+    target = target_row, target_col
+
+    the_test_list = [
+        pawn_movement,
+        rook_movement,
+        knight_movement,
+        bishop_movement,
+        queen_movement,
+        # here go white king,
+        # here go black king
+        ]
 
     if (col_pos == target_col) and (row_pos == target_row):
         print("invalid move, pieces cannot be moved to they are")
         col_pos, row_pos = piece_to_move()
-        board = move_white(col_pos, row_pos, board, white_pieces)
+        board = move(col_pos, row_pos, board, your_pieces)
         return board
-   
-    elif board[row_pos][col_pos] == 1: # if piece is white pawn
-        board = white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
+    
+    i = board[row_pos, col_pos] - 1
+    i = (i) if (5 >= i) and (i != 12) else i if (i == 11) else (i - 6)
 
-    elif board[row_pos][col_pos] == 2: # if piece is white rook
-        board = white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-
-    elif board[row_pos][col_pos] == 3: # if piece is white knight
-        board = white_knight_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-
-    elif board[row_pos][col_pos] == 4: # if piece is white bishop
-        board = white_bishop_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-        
-    elif board[row_pos][col_pos] == 5: # if piece is white queen
-        board = white_queen_movement(col_pos, target_col, row_pos, target_row, board, white_pieces)
-
-    elif board[row_pos][col_pos] == 6: # is piece is white king
-        pass
+    board = the_test_list[int(i)](current, target, board, your_pieces)
 
     if (initial_board == board).all(): # if the board is same as before (move failed), redoes turn
-            col_pos, row_pos = piece_to_move()
-            board = move_white(col_pos, row_pos, board, white_pieces)
-            return board
+        col_pos, row_pos = piece_to_move()
+        board = move(col_pos, row_pos, board, your_pieces)
+        return board
     else:
         return board
 
 
-def white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
-    if not is_friendly_fire(target_col, target_row, board, white_pieces):
+def pawn_movement(current, target, board, your_pieces):
+    row_pos, col_pos = current
+    target_row, target_col = target
 
-        if row_pos == 1:
-            if (row_pos + 1 == target_row) and (target_col == col_pos):
-                board[row_pos][col_pos] = 0
-                board[target_row][target_col] = 1
+    if not is_friendly_fire(target_col, target_row, board, your_pieces):
+        if board[row_pos, col_pos] == 1:
+            starting_point = 1
+            one_jump = 1
+            two_jump = 2
+
+        elif board[row_pos, col_pos] == 7:
+            starting_point = 7
+            one_jump = -1
+            two_jump = -2
+
+
+        if row_pos == starting_point:
+            if (row_pos + one_jump == target_row) and (target_col == col_pos):
+                board[target_row, target_col] = board[row_pos, col_pos]
+                board[row_pos, col_pos] = 0
                 return board
             
-            elif (row_pos + 2 == target_row) and (target_col == col_pos):
-                if not is_friendly_fire(target_col, target_row-1, board, white_pieces):
-                    board[row_pos][col_pos] = 0
-                    board[target_row][target_col] = 1
+            elif (row_pos + two_jump == target_row) and (target_col == col_pos):
+                if not is_friendly_fire(target_col, target_row-1, board, your_pieces):
+                    board[target_row, target_col] = board[row_pos, col_pos]
+                    board[row_pos, col_pos] = 0
                     return board
                 
                 else:
@@ -67,9 +76,9 @@ def white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_p
                 print("invalid move, try again")
                 return board
         else:
-            if (row_pos + 1 == target_row) and (target_col == col_pos):
-                board[row_pos][col_pos] = 0
-                board[target_row][target_col] = 1
+            if (row_pos + one_jump == target_row) and (target_col == col_pos):
+                board[target_row, target_col] = board[row_pos, col_pos]
+                board[row_pos, col_pos] = 0
                 return board
             else:
                 print("invalid move, try again")
@@ -79,8 +88,11 @@ def white_pawn_movement(col_pos, target_col, row_pos, target_row, board, white_p
         return board    
 
         
-def white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
-    if not is_friendly_fire(target_col, target_row, board, white_pieces):
+def rook_movement(current, target, board, your_pieces):
+    row_pos, col_pos = current
+    target_row, target_col = target
+
+    if not is_friendly_fire(target_col, target_row, board, your_pieces):
 
         if is_horizontal(col_pos, target_col):
             plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
@@ -90,8 +102,8 @@ def white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_p
                     print("invalid move, try again")
                     return board
                 
-            board[row_pos][col_pos] = 0
-            board[target_row][target_col] = 2
+            board[target_row, target_col] = board[row_pos, col_pos]
+            board[row_pos, col_pos] = 0
             return board
         
         elif is_vertical(row_pos, target_row):
@@ -102,8 +114,8 @@ def white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_p
                     print("invalid move, try again")
                     return board
                 
-            board[row_pos][col_pos] = 0
-            board[target_row][target_col] = 2
+            board[target_row, target_col] = board[row_pos, col_pos]
+            board[row_pos, col_pos] = 0
             return board
         
         else:
@@ -114,14 +126,17 @@ def white_rook_movement(col_pos, target_col, row_pos, target_row, board, white_p
         return board    
 
 
-def white_knight_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
-    if not is_friendly_fire(target_col, target_row, board, white_pieces):
+def knight_movement(current, target, board, your_pieces):
+    row_pos, col_pos = current
+    target_row, target_col = target
+
+    if not is_friendly_fire(target_col, target_row, board, your_pieces):
         possibilities = np.array([[1, 2], [1, -2], [-1, 2], [-1, -2], [2, 1], [2, -1], [-2, 1], [-2, -1]])
 
         for i in possibilities:
             if (target_row == row_pos + i[0]) and (target_col == col_pos + i[1]):  
-                board[row_pos][col_pos] = 0
-                board[target_row][target_col] = 3
+                board[target_row, target_col] = board[row_pos, col_pos]
+                board[row_pos, col_pos] = 0
                 return board
 
         print("invalid move, try again")
@@ -131,8 +146,11 @@ def white_knight_movement(col_pos, target_col, row_pos, target_row, board, white
         return board
 
 
-def white_bishop_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
-    if not is_friendly_fire(target_col, target_row, board, white_pieces):
+def bishop_movement(current, target, board, your_pieces):
+    row_pos, col_pos = current
+    target_row, target_col = target
+
+    if not is_friendly_fire(target_col, target_row, board, your_pieces):
         if is_diagonal(target_row, row_pos, target_col, col_pos):
 
             row_plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
@@ -146,8 +164,8 @@ def white_bishop_movement(col_pos, target_col, row_pos, target_row, board, white
                     print("invalid move, try again")
                     return board
                 
-            board[row_pos][col_pos] = 0
-            board[target_row][target_col] = 4
+            board[target_row, target_col] = board[row_pos, col_pos]
+            board[row_pos, col_pos] = 0
             return board
 
         else:
@@ -158,8 +176,11 @@ def white_bishop_movement(col_pos, target_col, row_pos, target_row, board, white
         return board    
 
 
-def white_queen_movement(col_pos, target_col, row_pos, target_row, board, white_pieces):
-    if not is_friendly_fire(target_col, target_row, board, white_pieces):
+def queen_movement(current, target, board, your_pieces):
+    row_pos, col_pos = current
+    target_row, target_col = target
+
+    if not is_friendly_fire(target_col, target_row, board, your_pieces):
         if is_diagonal(target_row, row_pos, target_col, col_pos):
             row_plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
             col_plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
@@ -172,8 +193,8 @@ def white_queen_movement(col_pos, target_col, row_pos, target_row, board, white_
                     print("invalid move, try again")
                     return board
                 
-            board[row_pos][col_pos] = 0
-            board[target_row][target_col] = 5
+            board[target_row, target_col] = board[row_pos, col_pos]
+            board[row_pos, col_pos] = 0
             return board
             
         elif is_horizontal(col_pos, target_col):
@@ -184,8 +205,8 @@ def white_queen_movement(col_pos, target_col, row_pos, target_row, board, white_
                     print("invalid move, try again")
                     return board
                 
-            board[row_pos][col_pos] = 0
-            board[target_row][target_col] = 5
+            board[target_row, target_col] = board[row_pos, col_pos]
+            board[row_pos, col_pos] = 0
             return board
         
         elif is_vertical(row_pos, target_row):
@@ -196,8 +217,8 @@ def white_queen_movement(col_pos, target_col, row_pos, target_row, board, white_
                     print("invalid move, try again")
                     return board
                 
-            board[row_pos][col_pos] = 0
-            board[target_row][target_col] = 5
+            board[target_row, target_col] = board[row_pos, col_pos]
+            board[row_pos, col_pos] = 0
             return board
             
         else:

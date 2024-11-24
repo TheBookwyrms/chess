@@ -13,7 +13,7 @@ def white_turn(board, white_pieces, black_pieces):
     col_pos, row_pos = piece_to_move()
 
     if np.isin(board[row_pos][col_pos], white_pieces):
-        board = move_white(col_pos, row_pos, board, white_pieces)
+        board = move(col_pos, row_pos, board, white_pieces)
         black_pieces = update_for_black_deaths(board, white_pieces, black_pieces)
     else:
         print("none of your pieces are in that position\n")
