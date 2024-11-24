@@ -9,8 +9,8 @@ def piece_to_move():
     return col_pos, row_pos
 
 
-def is_friendly_fire(target_col, target_row, board, white_pieces):
-    if np.isin(board[target_row][target_col], white_pieces):
+def is_friendly_fire(target_col, target_row, board, your_pieces):
+    if np.isin(board[target_row][target_col], your_pieces):
         return True
-    elif not np.isin(board[target_row][target_col], white_pieces):
+    elif not np.isin(board[target_row][target_col], your_pieces):
         return False

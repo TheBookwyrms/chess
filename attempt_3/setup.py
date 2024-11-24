@@ -44,8 +44,6 @@ def setup():
     board[7][6] = 9 # black knight 2
     board[7][7] = 8 # black rook 2
 
-    board[0][4] = 0
-    board[1][4] = 8
 
 
     white_pieces = np.array([1,2,3,4,5,6])

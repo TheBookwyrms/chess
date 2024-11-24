@@ -44,8 +44,10 @@ def main():
 
     while not game_over:
         board = white_turn(board, white_pieces, black_pieces)
+        #black_in_check = if_black_in_check()
+        #black_in_stalemate = if_black_in_stalemate()
+        #black_in_checkmate = if_black_in_checkmate()
         display(board)
-        print(type(board))
         #board = black_turn(board, white_pieces, black_pieces)
         #display(board)
         #game_over = False
