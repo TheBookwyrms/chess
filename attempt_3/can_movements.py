@@ -42,7 +42,7 @@ def can_diagonal(current, target, board):
         if int(board[i[0]][i[1]]) != 0:
             print("invalid move, try again")
             return False
-        
+    
     return True
 
 

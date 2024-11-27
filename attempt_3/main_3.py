@@ -1,9 +1,11 @@
-from setup import *
+from game_setup import *
 from move_for_turn import *
 from common_functions import *
 
 
 # TODO: give pawns diagonal attack
+# TODO: add en passant
+# TODO: add castling
 # TODO: make _x_ in check
 # TODO: make _x_ in stalemate
 # TODO: make _x_ in checkmate
@@ -14,13 +16,9 @@ from common_functions import *
 
 
 
-def white_turn(board, white_pieces, black_pieces):
+def turn(board, your_pieces, their_pieces):
 
-    board = move(board, white_pieces, black_pieces)
-    return board
-
-
-def black_turn(board, white_pieces, black_pieces):
+    board = move(board, your_pieces, their_pieces)
     return board
 
 def display(board):
@@ -32,14 +30,12 @@ def display(board):
 
     print('\n')
 
-    print("        a   b   c   d   e   f   g   h\n")
-    for chess_row, i in zip(chess_rows[:], range(len(board[:]))):
-        
-        row_i = str(board[i]).split(".")
-        row_i[0] = f'{row_i[0][0]}  {row_i[0][-1]}'
+    print("     a   b   c   d   e   f   g   h\n")
+    for chess_row, i in zip(chess_rows[:], range(len(board[:]))):        
 
-        print(f'{chess_row}    {"  ".join(row_i)}    {chess_row}')
-    print("\n        a   b   c   d   e   f   g   h")
+        row_text = "".join(f"{int(x):4}" for x in board[i])
+        print(f'{chess_row} {row_text}    {chess_row}')
+    print("\n     a   b   c   d   e   f   g   h")
 
     print("\n")
 
@@ -56,13 +52,15 @@ def main():
     display(board)
 
     while not game_over:
-        board = white_turn(board, white_pieces, black_pieces)
+        print("white turn")
+        board = turn(board, white_pieces, black_pieces) # white turn
         #black_in_check = if_black_in_check()
         #black_in_stalemate = if_black_in_stalemate()
         #black_in_checkmate = if_black_in_checkmate()
         display(board)
-        #board = black_turn(board, white_pieces, black_pieces)
-        #display(board)
+        print("black turn")
+        board = turn(board, black_pieces, white_pieces) # black turn
+        display(board)
         #game_over = False
 
 main()

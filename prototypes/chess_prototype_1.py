@@ -40,10 +40,12 @@ class movement_options:
             return False
 
     def valid_row_constant_col(self, target_row, target_col):
-        if (self.row != target_row) and (self.col == target_col):
-            return True
-        else:
-            return False
+        # if (self.row != target_row) and (self.col == target_col):
+        #     return True
+        # else:
+        #     return False
+        
+        return (self.row != target_row) and (self.col == target_col)
         
     def valid_col_constant_row(self, target_row, target_col):
         if (self.col != target_col) and (self.row == target_row):
