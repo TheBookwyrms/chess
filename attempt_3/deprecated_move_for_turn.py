@@ -3,10 +3,8 @@ from common_functions import *
 
 
 def move(col_pos, row_pos, board, your_pieces):
-    position = input("type row and column to move to, as a single number\n")
-    lst = [int(i) for i in position]
-    target_col = lst[0]-1
-    target_row = lst[1]-1
+    target_row, target_col = where_from()
+
     initial_board = np.copy(board)
 
     current = row_pos, col_pos
@@ -100,27 +98,21 @@ def rook_movement(current, target, board, your_pieces):
             for i in range(row_pos + plus_minus_one, target_row + 0, plus_minus_one):
                 if int(board[i][target_col]) != 0:
                     print("invalid move, try again")
-                    return board
-                
-            board[target_row, target_col] = board[row_pos, col_pos]
-            board[row_pos, col_pos] = 0
-            return board
-        
+                    return board        
         elif is_vertical(row_pos, target_row):
             plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
             
             for i in range(col_pos + plus_minus_one, target_col + plus_minus_one, plus_minus_one):
                 if int(board[target_row][i]) != 0:
                     print("invalid move, try again")
-                    return board
-                
-            board[target_row, target_col] = board[row_pos, col_pos]
-            board[row_pos, col_pos] = 0
-            return board
-        
+                    return board        
         else:
             print("invalid move, try again")
-            return board    
+            return board  
+        
+        board[target_row, target_col] = board[row_pos, col_pos]
+        board[row_pos, col_pos] = 0
+        return board  
     else:
         print("attacking your own pieces is not permitted, try again")
         return board    
@@ -192,11 +184,6 @@ def queen_movement(current, target, board, your_pieces):
                 if int(board[i[0]][i[1]]) != 0:
                     print("invalid move, try again")
                     return board
-                
-            board[target_row, target_col] = board[row_pos, col_pos]
-            board[row_pos, col_pos] = 0
-            return board
-            
         elif is_horizontal(col_pos, target_col):
             plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
 
@@ -204,11 +191,6 @@ def queen_movement(current, target, board, your_pieces):
                 if int(board[i][target_col]) != 0:
                     print("invalid move, try again")
                     return board
-                
-            board[target_row, target_col] = board[row_pos, col_pos]
-            board[row_pos, col_pos] = 0
-            return board
-        
         elif is_vertical(row_pos, target_row):
             plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
             
@@ -216,14 +198,13 @@ def queen_movement(current, target, board, your_pieces):
                 if int(board[target_row][i]) != 0:
                     print("invalid move, try again")
                     return board
-                
-            board[target_row, target_col] = board[row_pos, col_pos]
-            board[row_pos, col_pos] = 0
-            return board
-            
         else:
             print("invalid move, try again")
             return board 
+        
+        board[target_row, target_col] = board[row_pos, col_pos]
+        board[row_pos, col_pos] = 0
+        return board
     else:
         print("attacking your own pieces is not permitted, try again")
         return board    

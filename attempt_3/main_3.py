@@ -1,35 +1,48 @@
 from setup import *
-from white_movements import *
+from move_for_turn import *
 from common_functions import *
 
-# which row (top to bottom) you're in, and then which column you're in (left to right)
 
-def update_for_black_deaths(board, white_pieces, black_pieces):
-    pass
+# TODO: give pawns diagonal attack
+# TODO: make _x_ in check
+# TODO: make _x_ in stalemate
+# TODO: make _x_ in checkmate
+# TODO
+
+
+# which row (top to bottom) you're in, and then which column you're in (left to right)
 
 
 
 def white_turn(board, white_pieces, black_pieces):
-    col_pos, row_pos = piece_to_move()
 
-    if np.isin(board[row_pos][col_pos], white_pieces):
-        board = move(col_pos, row_pos, board, white_pieces)
-        black_pieces = update_for_black_deaths(board, white_pieces, black_pieces)
-    else:
-        print("none of your pieces are in that position\n")
-        white_turn(board, white_pieces, black_pieces)
-    
+    board = move(board, white_pieces, black_pieces)
     return board
-
 
 
 def black_turn(board, white_pieces, black_pieces):
     return board
 
 def display(board):
+
+    board = np.flipud(board)
+
+    chess_rows = np.array([8,7,6,5,4,3,2,1])
+    chess_letters = np.array(["a","b","c","d","e","f","g","h"])
+
+    print('\n')
+
+    print("        a   b   c   d   e   f   g   h\n")
+    for chess_row, i in zip(chess_rows[:], range(len(board[:]))):
+        
+        row_i = str(board[i]).split(".")
+        row_i[0] = f'{row_i[0][0]}  {row_i[0][-1]}'
+
+        print(f'{chess_row}    {"  ".join(row_i)}    {chess_row}')
+    print("\n        a   b   c   d   e   f   g   h")
+
     print("\n")
-    print(board)
-    print("\n")
+
 
 def main():
     board, white_pieces, black_pieces = setup()
