@@ -64,15 +64,16 @@ def pawn_movement(current, target, board, your_pieces, their_pieces):
     (starting_point, one_jump, two_jump) = (1, 1, 2) if board[row_pos, col_pos] == 1 else (starting_point, one_jump, two_jump)
     (starting_point, one_jump, two_jump) = (6, -1, -2) if board[row_pos, col_pos] == 7 else (starting_point, one_jump, two_jump)
 
-    if (row_pos + one_jump == target_row) and (target_col == col_pos):
-        if not np.isin(board[target_row, target_col], their_pieces):
-            return True
-
-    if row_pos == starting_point:            
-        if (row_pos + two_jump == target_row) and (target_col == col_pos):
+    if int(board[target_row, target_col]) == 0:
+        if (row_pos + one_jump == target_row) and (target_col == col_pos):
             if not np.isin(board[target_row, target_col], their_pieces):
-                if not is_friendly_fire(target_col, target_row-1, board, your_pieces):
-                    return True
+                return True
+
+        if row_pos == starting_point:            
+            if (row_pos + two_jump == target_row) and (target_col == col_pos):
+                if not np.isin(board[target_row, target_col], their_pieces):
+                    if not is_friendly_fire(target_col, target_row-1, board, your_pieces):
+                        return True
             
     if (row_pos + one_jump == target_row) and ((target_col == col_pos +1) or (target_col == col_pos -1)):
         if np.isin(board[target_row, target_col], their_pieces):
@@ -149,6 +150,7 @@ def king_movement(current, target, board, your_pieces, their_pieces):
     if np.abs(target_row-row_pos >1) or np.abs(target_col-col_pos >1):
         return False
 
+    a = board[target_row, target_col]
 
     can_be_attacked = np.zeros(16, dtype=bool)
 
@@ -157,6 +159,7 @@ def king_movement(current, target, board, your_pieces, their_pieces):
     for each_piece in their_pieces: # each_piece is number of piece
         that_piece_row, that_piece_col = np.where(board == each_piece)
         for piece in zip(that_piece_row, that_piece_col): # piece is position for every piece
+            board[target_row, target_col] = your_pieces[-1]
             if each_piece == 7: # black_pawn
                 can_be_attacked[xth_piece] = pawn_movement(piece, target, board, their_pieces, None)
             if each_piece == 8: # black_rook
@@ -170,6 +173,8 @@ def king_movement(current, target, board, your_pieces, their_pieces):
             if each_piece == 12: # black_king
                 if np.abs(target_row-piece[0])<=1 and np.abs(target_col-piece[1])<=1:
                     can_be_attacked[xth_piece] = True
+
+            board[target_row, target_col] = a
 
             xth_piece += 1
     

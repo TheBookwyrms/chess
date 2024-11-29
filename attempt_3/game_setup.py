@@ -28,8 +28,6 @@ def setup():
     board[0] = [2,3,4,5,6,4,3,2]
     board[7] = [8,9,10,11,12,10,9,8]
 
-    board[2][5] = 7
-
 
     white_pieces = np.array([1,2,3,4,5,6])
     black_pieces = np.array([7,8,9,10,11,12])
