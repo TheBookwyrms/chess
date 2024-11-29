@@ -58,9 +58,9 @@ def main():
         #black_in_stalemate = if_black_in_stalemate()
         #black_in_checkmate = if_black_in_checkmate()
         display(board)
-        #print("black turn")
-        #board = turn(board, black_pieces, white_pieces) # black turn
-        #display(board)
+        print("black turn")
+        board = turn(board, black_pieces, white_pieces) # black turn
+        display(board)
         #game_over = False
 
 main()
