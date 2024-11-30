@@ -39,10 +39,15 @@ def move(board, your_pieces, their_pieces):
                 print("invalid move, try again")
                 board = move(board, your_pieces, their_pieces)
                 return board
-            elif can_move: # if can_move is True  
-                can_be_attacked = in_check(board, current, target, your_pieces, their_pieces)
+            elif can_move: # if can_move is True 
 
-                if np.isin(True, can_be_attacked):
+                a = np.copy(board)
+                if board[current] == your_pieces[-1]:
+                    a[target] = your_pieces[-1]
+                    a[current] = 0
+                king_can_be_attacked = in_check(a, your_pieces, their_pieces)
+
+                if np.isin(True, king_can_be_attacked):
                     print("this move would put you in check")
                     board = move(board, your_pieces, their_pieces)
                     return board
@@ -154,43 +159,36 @@ def king_movement(current, target, board, your_pieces, their_pieces):
     row_pos, col_pos = current
     target_row, target_col = target
 
-    if np.abs(target_row-row_pos >1) or np.abs(target_col-col_pos >1):
+    if np.abs(target_row-row_pos)>1 or np.abs(target_col-col_pos)>1:
         return False
     
     return True
 
 
 
-def in_check(board, current, target, your_pieces, their_pieces):
-
-    a = np.copy(board)
-#    a[:] = board
-
-    if board[current] == your_pieces[-1]:
-        a[target] = your_pieces[-1]
-        a[current] = 0
+def in_check(board, your_pieces, their_pieces):
 
     can_be_attacked = np.zeros(16, dtype=bool)
 
     xth_piece = 0
 
-    king_row, king_col = np.where(a == your_pieces[-1])
+    king_row, king_col = np.where(board == your_pieces[-1])
     your_king = int(king_row), int(king_col)
     
     for each_piece in their_pieces: # each_piece is number of piece
         that_piece_row, that_piece_col = np.where(board == each_piece)
         for piece in zip(that_piece_row, that_piece_col): # piece is position for every piece
-            if each_piece == 7: # black_pawn
-                can_be_attacked[xth_piece] = pawn_movement(piece, your_king, a, their_pieces, your_pieces)
-            if each_piece == 8: # black_rook
-                can_be_attacked[xth_piece] = rook_movement(piece, your_king, a, their_pieces, None)
-            if each_piece == 9: # black_knight
-                can_be_attacked[xth_piece] = knight_movement(piece, your_king, a, their_pieces, None)
-            if each_piece == 10: # black_bishop
-                can_be_attacked[xth_piece] = bishop_movement(piece, your_king, a, their_pieces, None)
-            if each_piece == 11: # black_queen
-                can_be_attacked[xth_piece] = queen_movement(piece, your_king, a, their_pieces, None)
-            if each_piece == 12: # black_king
+            if each_piece == their_pieces[0]: # pawn
+                can_be_attacked[xth_piece] = pawn_movement(piece, your_king, board, their_pieces, your_pieces)
+            if each_piece == their_pieces[1]: # rook
+                can_be_attacked[xth_piece] = rook_movement(piece, your_king, board, their_pieces, None)
+            if each_piece == their_pieces[2]: # knight
+                can_be_attacked[xth_piece] = knight_movement(piece, your_king, board, their_pieces, None)
+            if each_piece == their_pieces[3]: # bishop
+                can_be_attacked[xth_piece] = bishop_movement(piece, your_king, board, their_pieces, None)
+            if each_piece == their_pieces[4]: # queen
+                can_be_attacked[xth_piece] = queen_movement(piece, your_king, board, their_pieces, None)
+            if each_piece == their_pieces[5]: # king
                 if np.abs(king_row-piece[0])<=1 and np.abs(king_col-piece[1])<=1:
                     can_be_attacked[xth_piece] = True
 
