@@ -14,7 +14,7 @@ def where_to():
         if len(position) == 2:
             target_col, target_row = position[0], int(position[1])
         if not ((target_col in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (target_row in [1, 2, 3, 4, 5, 6, 7, 8])):
-            print("invalid input, retry")
+            print(f"{colourer('31')}invalid input, retry{colourer(0)}")
 
     target_col = c_to_s[target_col]-1
     target_row = int(target_row)-1
@@ -27,7 +27,7 @@ def piece_to_move():
         if len(position) == 2:
             col_pos, row_pos = position[0], int(position[1])
         if not ((col_pos in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (row_pos in [1, 2, 3, 4, 5, 6, 7, 8])):
-            print("invalid input, retry")
+            print(f"{colourer('31')}invalid input, retry{colourer(0)}")
 
     col_pos = c_to_s[col_pos]-1
     row_pos = int(row_pos)-1
@@ -56,3 +56,7 @@ def is_diagonal(target_row, row_pos, target_col, col_pos):
         return True
     else:
         return False
+    
+
+def colourer(colour_code):
+    return f'\033[{colour_code}m'

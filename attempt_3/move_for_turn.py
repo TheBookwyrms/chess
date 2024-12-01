@@ -26,7 +26,7 @@ def move(board, your_pieces, their_pieces):
                 ]
 
             if (col_pos == target_col) and (row_pos == target_row):
-                print("invalid move, pieces cannot be moved to they are")
+                print(f"{colourer('31')}invalid move, pieces cannot be moved to they are{colourer(0)}")
                 board = move(board, your_pieces, their_pieces)
                 return board
             
@@ -36,7 +36,7 @@ def move(board, your_pieces, their_pieces):
             can_move = movement_list[int(i)](current, target, board, your_pieces, their_pieces)
 
             if not can_move: # if can_move is False
-                print("invalid move, try again")
+                print(f"{colourer('31')}invalid move, try again{colourer(0)}")
                 board = move(board, your_pieces, their_pieces)
                 return board
             elif can_move: # if can_move is True 
@@ -48,7 +48,7 @@ def move(board, your_pieces, their_pieces):
                 king_can_be_attacked = in_check(a, your_pieces, their_pieces)
 
                 if np.isin(True, king_can_be_attacked):
-                    print("this move would put you in check")
+                    print(f"{colourer('31')}this move would put you in check{colourer(0)}")
                     board = move(board, your_pieces, their_pieces)
                     return board
                 else:
@@ -56,15 +56,15 @@ def move(board, your_pieces, their_pieces):
                     board[row_pos, col_pos] = 0
                     return board
             else:
-                print("a weird error has occured, reattempting")
+                print(f"{colourer('31')}a weird error has occured, reattempting{colourer(0)}")
                 board = move(board, your_pieces, their_pieces)
                 return board
         else:
-            print("attacking your own pieces is not permitted, try again")
+            print(f"{colourer('31')}attacking your own pieces is not permitted, try again{colourer(0)}")
             board = move(board, your_pieces, their_pieces)
             return board    
     else:
-        print("none of your pieces are in that position\n")
+        print(f"{colourer('31')}none of your pieces are in that position\n{colourer(0)}")
         board = move(board, your_pieces, their_pieces)
         return board
 

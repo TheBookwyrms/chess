@@ -16,14 +16,14 @@ def turn(board, your_pieces, their_pieces, game_over):
 
     if in_stalemate(board, your_pieces, their_pieces):
         if not np.isin(True, in_check(board, your_pieces, their_pieces)):
-            print(f"a stalemate has occured, the game is over")
+            print(f"{colourer('35')}a stalemate has occured, the game is over{colourer(0)}")
             game_over = True
         else:
-            print(f"you are in checkmate, the game is over")
+            print(f"{colourer('35')}you are in checkmate, the game is over{colourer(0)}")
             game_over = True
     else:
         if np.isin(True, in_check(board, your_pieces, their_pieces)):
-            print("you are in check, only moves that bring you out of check will be permitted\n")
+            print(f"{colourer('33')}you are in check, only moves that bring you out of check will be permitted\n{colourer(0)}")
 
         board = move(board, your_pieces, their_pieces)
 
@@ -64,13 +64,10 @@ def display(board):
     print("      a  b  c  d  e  f  g  h\n")
     for chess_row, i, side in zip(chess_rows, range(len(board)), side_text):        
 
-        def inverter(code):
-            return f'\033[{code}m'
-
         lst = []
         for j, x in enumerate(board[i]):
             if (j + one)%2 != 0:
-                test = f' {inverter('07')}{inverted_nums_to_chess[int(x)]} {inverter(0)}'
+                test = f' {colourer('07')}{inverted_nums_to_chess[int(x)]} {colourer(0)}'
             else:
                 test = f' {normal_nums_to_chess[int(x)]} '
             lst.append(test)
@@ -98,20 +95,12 @@ def main():
     while not game_over:
         if whos_turn%2 == 0:
             display(board)
-            print("white turn")
+            print(f"{colourer('04')}white turn{colourer(0)}")
             board, game_over = turn(board, white_pieces, black_pieces, game_over) # white turn
         else:
-            print("black turn")
             display(board)
+            print(f"{colourer('04')}black turn{colourer(0)}")
             board, game_over = turn(board, black_pieces, white_pieces, game_over) # black turn
 
-        
-        #black_in_check = if_black_in_check()
-        #black_in_stalemate = if_black_in_stalemate()
-        #black_in_checkmate = if_black_in_checkmate()
-        
         whos_turn += 1
-
-        #game_over = False
-
 main()
