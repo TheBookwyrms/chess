@@ -1,6 +1,22 @@
 import numpy as np
 
 def can_horizontal(current, target, board):
+
+    row_pos, col_pos = current
+    target_row, target_col = target
+    
+    plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
+    
+    for i in range(col_pos + plus_minus_one, target_col + 0, plus_minus_one):
+        if int(board[target_row][i]) != 0:
+            #print("invalid move, try again")
+            return False     
+    
+    return True
+    
+
+
+def can_vertical(current, target, board):
     row_pos, col_pos = current
     target_row, target_col = target
 
@@ -10,20 +26,6 @@ def can_horizontal(current, target, board):
         if int(board[i][target_col]) != 0:
             #print("invalid move, try again")
             return False
-    
-    return True
-
-
-def can_vertical(current, target, board):
-    row_pos, col_pos = current
-    target_row, target_col = target
-    
-    plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
-    
-    for i in range(col_pos + plus_minus_one, target_col + plus_minus_one, plus_minus_one):
-        if int(board[target_row][i]) != 0:
-            #print("invalid move, try again")
-            return False     
     
     return True
 

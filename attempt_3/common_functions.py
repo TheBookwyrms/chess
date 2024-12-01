@@ -39,14 +39,14 @@ def is_friendly_fire(target_col, target_row, board, your_pieces):
     elif not np.isin(board[target_row, target_col], your_pieces):
         return False
     
-def is_horizontal(col_pos, target_col):
-    if col_pos == target_col:
+def is_horizontal(row_pos, target_row):
+    if row_pos == target_row:
         return True
     else:
         return False    
     
-def is_vertical(row_pos, target_row):
-    if row_pos == target_row:
+def is_vertical(col_pos, target_col):
+    if col_pos == target_col:
         return True
     else:
         return False

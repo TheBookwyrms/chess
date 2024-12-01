@@ -34,16 +34,22 @@ def setup():
 
 
     
-    board = np.zeros((8,8))
-    board[7, 0] = 12
-    board[2, 0] = 10
-    board[3, 5] = 7
-    board[4, 7] = 7
-    board[0, 0] = 2
-    board[6, 7] = 2
-    board[0, 1] = 5 
-    board[2, 5] = 3
-    board[3, 7] = 1
-    board[0, 7] = 6
+    # board = np.zeros((8,8))
+    # board[7, 0] = 12
+    # board[2, 0] = 10
+    # board[3, 5] = 7
+    # board[4, 7] = 7
+    # board[0, 0] = 2
+    # board[6, 7] = 2
+    # board[0, 1] = 5 
+    # board[2, 5] = 3
+    # board[3, 7] = 1
+    # board[0, 7] = 6
+
+
+    # board = np.zeros((8,8))
+    # board[5, 2] = 8
+    # board[4, 7] = 6
+
 
     return board, white_pieces, black_pieces
