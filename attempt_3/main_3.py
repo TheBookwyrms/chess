@@ -19,14 +19,19 @@ from game_enders import *
 
 def turn(board, your_pieces, their_pieces, game_over):
 
-    if np.isin(True, in_check(board, your_pieces, their_pieces)):
-        print("you are in check, only moves that bring you out of check will be permitted\n")
+    if in_stalemate(board, your_pieces, their_pieces):
+        if not np.isin(True, in_check(board, your_pieces, their_pieces)):
+            print(f"a stalemate has occured, the game is over")
+            game_over = True
+        else:
+            print(f"you are in checkmate, the game is over")
+            game_over = True
+    else:
+        if np.isin(True, in_check(board, your_pieces, their_pieces)):
+            print("you are in check, only moves that bring you out of check will be permitted\n")
 
-    board = move(board, your_pieces, their_pieces)
+        board = move(board, your_pieces, their_pieces)
 
-    if in_stalemate(board, their_pieces, your_pieces):
-        print(f"a stalemate has occured, the game is over")
-        game_over = True
 
     #if in_checkmate(board, your_pieces, their_pieces):
      #   pass

@@ -48,6 +48,19 @@ def setup():
 
 
     # board = np.zeros((8,8))
+    # board[7, 0] = 6
+    # board[2, 0] = 4
+    # board[3, 5] = 9
+    # board[4, 7] = 7
+    # board[0, 0] = 8
+    # board[6, 7] = 8
+    # board[0, 1] = 11 
+    # board[2, 5] = 1
+    # board[3, 7] = 1
+    # board[0, 7] = 12
+
+
+    # board = np.zeros((8,8))
     # board[5, 2] = 8
     # board[4, 7] = 6
 
