@@ -27,6 +27,6 @@ for file in new_files:
                     whiles += 1
         total_lines += lines
         print(f"number of lines in {file:^39} is {lines}")
-print(f'number of lines in {'written in total':^39} is {total_lines}')
+print(f'in total number of {'lines written':^39} is {total_lines}')
 print(f'in total number of {'for loops':^39} is {fors}')
 print(f'in total number of {'while loops':^39} is {whiles}')
