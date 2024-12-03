@@ -55,7 +55,7 @@ def move(board, your_pieces, their_pieces):
                                 print(f"{colourer('31')}eating kings directly is not allowed, the game can only be ended by checkmate or stalemate\ntry again{colourer(0)}")
                                 can_move = False
                 else:
-                    print(f"{colourer('31')}invalid move, pieces cannot be moved to they are{colourer(0)}")
+                    print(f"{colourer('31')}invalid move, pieces cannot be moved to where they are{colourer(0)}")
             else:
                 print(f"{colourer('31')}attacking your own pieces is not permitted, try again{colourer(0)}")  
         else:
