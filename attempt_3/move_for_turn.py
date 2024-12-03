@@ -1,22 +1,28 @@
 import numpy as np
 from common_functions import *
 from can_movements import *
+from error_messages import *
 
 
 def move(board, your_pieces, their_pieces):
 
+    num = 0
     can_move = False
 
     while not can_move:
 
+        print(error(num))
         col_pos, row_pos = piece_to_move()
+        num = 1
 
         if np.isin(board[row_pos, col_pos], your_pieces):
 
+            num = 2
             target_row, target_col = where_to()
 
             if not is_friendly_fire(target_col, target_row, board, your_pieces):
 
+                num = 3
                 current = row_pos, col_pos # compresses current position
                 target = target_row, target_col # compresses final position
 
@@ -34,32 +40,25 @@ def move(board, your_pieces, their_pieces):
                     i = (i) if (5 >= i) else (i - 6)
 
                     can_move = movement_list[int(i)](current, target, board, your_pieces, their_pieces)
-
-                    if not can_move: # if can_move is False
-                        print(f"{colourer('31')}invalid move, try again{colourer(0)}")
-                    elif can_move: # if can_move is True 
+                    num = 4
+                    
+                    if can_move: # if can_move is True 
                         a = np.copy(board)
                         if board[current] == your_pieces[-1]:
                             a[target] = your_pieces[-1]
                             a[current] = 0
                         king_can_be_attacked = in_check(a, your_pieces, their_pieces)
+                        num = 5
 
                         if np.isin(True, king_can_be_attacked):
-                            print(f"{colourer('31')}this move would put you in check{colourer(0)}")
                             can_move = False
                         else:
                             if not eats_king(board, your_pieces):
                                 board[target_row, target_col] = board[row_pos, col_pos]
                                 board[row_pos, col_pos] = 0
                             else:
-                                print(f"{colourer('31')}eating kings directly is not allowed, the game can only be ended by checkmate or stalemate\ntry again{colourer(0)}")
+                                num = 6
                                 can_move = False
-                else:
-                    print(f"{colourer('31')}invalid move, pieces cannot be moved to where they are{colourer(0)}")
-            else:
-                print(f"{colourer('31')}attacking your own pieces is not permitted, try again{colourer(0)}")  
-        else:
-            print(f"{colourer('31')}none of your pieces are in that position\n{colourer(0)}")
             
     return board
 
