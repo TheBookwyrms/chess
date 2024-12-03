@@ -11,10 +11,15 @@ def where_to():
     target_col, target_row = "j", 9
     while not ((target_col in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (target_row in [1, 2, 3, 4, 5, 6, 7, 8])):
         position = input("type letter and number of position to move to, without spaces, in that order\n")
-        if len(position) == 2:
-            target_col, target_row = position[0], int(position[1])
-        if not ((target_col in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (target_row in [1, 2, 3, 4, 5, 6, 7, 8])):
+        
+        if not len(position) == 2:
             print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+        else:
+            if not ((position[0] in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (position[1] in ["1", "2", "3", "4", "5", "6", "7", "8"])):
+                print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+            else:
+                if len(position) == 2:
+                    target_col, target_row = position[0], int(position[1])
 
     target_col = c_to_s[target_col]-1
     target_row = int(target_row)-1
@@ -24,10 +29,14 @@ def piece_to_move():
     col_pos, row_pos = "j", 9
     while not ((col_pos in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (row_pos in [1, 2, 3, 4, 5, 6, 7, 8])):
         position = input("type letter and number of piece to be moved, without spaces, in that order\n")
-        if len(position) == 2:
-            col_pos, row_pos = position[0], int(position[1])
-        if not ((col_pos in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (row_pos in [1, 2, 3, 4, 5, 6, 7, 8])):
+        if not len(position) == 2:
             print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+        else:
+            if not ((position[0] in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (position[1] in ["1", "2", "3", "4", "5", "6", "7", "8"])):
+                print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+            else:
+                if len(position) == 2:
+                    col_pos, row_pos = position[0], int(position[1])
 
     col_pos = c_to_s[col_pos]-1
     row_pos = int(row_pos)-1

@@ -48,3 +48,8 @@ def can_diagonal(current, target, board):
     return True
 
 
+def eats_king(board, your_pieces):
+    if not np.isin(your_pieces[-1], board):
+        return True
+    else:
+        return False
