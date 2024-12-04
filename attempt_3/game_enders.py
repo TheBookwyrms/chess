@@ -17,7 +17,6 @@ def in_stalemate(board, stalemated, stalemater_pieces):
 
     x_piece_can_move = np.zeros(16, dtype=bool)
     xth_piece = 0
-
     
     for each_piece in stalemated:
         that_piece_row, that_piece_col = np.where(board == each_piece)

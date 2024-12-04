@@ -1,4 +1,5 @@
 import numpy as np
+from error_messages import *
 
 
 chess_letters_to_system = {
@@ -8,15 +9,17 @@ chess_letters_to_system = {
 c_to_s = chess_letters_to_system
 
 def where_to():
+    num = 0
     target_col, target_row = "j", 9
     while not ((target_col in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (target_row in [1, 2, 3, 4, 5, 6, 7, 8])):
+        print(error(num))
         position = input("type letter and number of position to move to, without spaces, in that order\n")
         
         if not len(position) == 2:
-            print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+            num = 7
         else:
             if not ((position[0] in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (position[1] in ["1", "2", "3", "4", "5", "6", "7", "8"])):
-                print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+                num = 7
             else:
                 if len(position) == 2:
                     target_col, target_row = position[0], int(position[1])
@@ -26,14 +29,17 @@ def where_to():
     return target_row, target_col
 
 def piece_to_move():
+    num = 0
     col_pos, row_pos = "j", 9
     while not ((col_pos in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (row_pos in [1, 2, 3, 4, 5, 6, 7, 8])):
+        print(error(num))
         position = input("type letter and number of piece to be moved, without spaces, in that order\n")
+        
         if not len(position) == 2:
-            print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+            num = 7
         else:
             if not ((position[0] in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (position[1] in ["1", "2", "3", "4", "5", "6", "7", "8"])):
-                print(f"{colourer('31')}invalid input, retry{colourer(0)}")
+                num = 7
             else:
                 if len(position) == 2:
                     col_pos, row_pos = position[0], int(position[1])
@@ -65,7 +71,3 @@ def is_diagonal(target_row, row_pos, target_col, col_pos):
         return True
     else:
         return False
-    
-
-def colourer(colour_code):
-    return f'\033[{colour_code}m'

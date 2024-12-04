@@ -84,13 +84,10 @@ def main():
     board, white_pieces, black_pieces = setup()
 
     game_over = False
-
     whos_turn = 0
 
     print("Let the game commence\n")
     print("\nWhite is on the top\nBlack is on the bottom\n")
-    print("columns are 1-8, left to right. rows are 1-8, top to bottom.")
-
 
     while not game_over:
         if whos_turn%2 == 0:

@@ -1,4 +1,5 @@
-from common_functions import *
+def colourer(colour_code):
+    return f'\033[{colour_code}m'
 
 def error(num):
     errors = {
@@ -9,7 +10,7 @@ def error(num):
         4:f"{colourer('31')}invalid move, try again{colourer(0)}",
         5:f"{colourer('31')}this move would put you in check{colourer(0)}",
         6:f"{colourer('31')}eating kings directly is not allowed, the game can only be ended by checkmate or stalemate\ntry again{colourer(0)}",
-        #7:,
+        7:f"{colourer('31')}invalid input, retry{colourer(0)}",
         #8:,
         #9:,
     }
