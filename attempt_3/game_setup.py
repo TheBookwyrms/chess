@@ -79,10 +79,10 @@ def setup():
     # board[4, 7] = 6
     # board[0, 0] = 12
 
-    board = np.zeros((8,8))
-    board[6, 2] = 1
-    board[4, 7] = 6
-    board[0, 2] = 12
+    #board = np.zeros((8,8))
+    #board[6, 2] = 1
+    #board[4, 7] = 6
+    #board[0, 2] = 12
 
 
     return board, white_pieces, black_pieces, side_text
