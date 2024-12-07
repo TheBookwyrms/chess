@@ -1,18 +1,19 @@
 import numpy as np
 
 def can_horizontal(current, target, board):
-
     row_pos, col_pos = current
     target_row, target_col = target
-    
-    plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
-    
-    for i in range(col_pos + plus_minus_one, target_col + 0, plus_minus_one):
-        if int(board[target_row][i]) != 0:
-            #print("invalid move, try again")
-            return False     
-    
-    return True
+
+    if (row_pos == target_row):
+        plus_minus_one = int((target_col - col_pos) / np.abs(target_col - col_pos))
+        
+        for i in range(col_pos + plus_minus_one, target_col + 0, plus_minus_one):
+            if int(board[target_row][i]) != 0:
+                #print("invalid move, try again")
+                return False     
+        
+        return True
+    return False
     
 
 
@@ -20,14 +21,16 @@ def can_vertical(current, target, board):
     row_pos, col_pos = current
     target_row, target_col = target
 
-    plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
+    if col_pos == target_col:
+        plus_minus_one = int((target_row - row_pos) / np.abs(target_row - row_pos))
 
-    for i in range(row_pos + plus_minus_one, target_row + 0, plus_minus_one):
-        if int(board[i][target_col]) != 0:
-            #print("invalid move, try again")
-            return False
-    
-    return True
+        for i in range(row_pos + plus_minus_one, target_row + 0, plus_minus_one):
+            if int(board[i][target_col]) != 0:
+                #print("invalid move, try again")
+                return False
+        
+        return True
+    return False
 
 
 def can_diagonal(current, target, board):

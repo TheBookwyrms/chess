@@ -52,11 +52,6 @@ from error_messages import *
 
 
 def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces):
-    system_to_chess_letters = {
-    1:"a", 2:"b", 3:"c", 4:"d",
-    5:"e", 6:"f", 7:"g", 8:"h"
-}
-
     piece = row_pos, col_pos
     rows = np.array([0, 1, 2, 3, 4, 5, 6, 7])
     cols = np.array([0, 1, 2, 3, 4, 5, 6, 7])
@@ -84,7 +79,7 @@ def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces)
                     i = board[piece] - 1 # prepares piece numbers for calling movement_list
                     i = (i) if (5 >= i) else (i - 6)
                     if movement_list[int(i)](piece, target, board, your_pieces, their_pieces):
-                        where_can_moves.append(system_to_chess_letters[col+1]+str(row+1))
+                        where_can_moves.append(s_to_c[col+1]+str(row+1))
 
     len_side_rows = [0, 0, 0, 0, 0, 0, 0]
     for index, piece in enumerate(where_can_moves):
@@ -213,11 +208,12 @@ def rook_movement(current, target, board, your_pieces, _):
     target_row, target_col = target
 
 
-    if is_horizontal(row_pos, target_row):
-        can_move = can_horizontal(current, target, board)
+    if can_horizontal(current, target, board):
+        can_move = True
                 
-    elif is_vertical(col_pos, target_col):  
-        can_move = can_vertical(current, target, board)   
+    elif can_vertical(current, target, board):
+        can_move = True
+
     else:
         can_move = False  
     
@@ -257,11 +253,11 @@ def queen_movement(current, target, board, your_pieces, _):
     if is_diagonal(target_row, row_pos, target_col, col_pos):
         can_move = can_diagonal(current, target, board)
             
-    elif is_horizontal(row_pos, target_row):
-        can_move = can_horizontal(current, target, board)
+    elif can_horizontal(current, target, board):
+        can_move = True
             
-    elif is_vertical(col_pos, target_col):
-        can_move = can_vertical(current, target, board)
+    elif can_vertical(current, target, board):
+        can_move = True
 
     else:
         can_move = False 

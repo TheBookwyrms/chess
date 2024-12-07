@@ -11,6 +11,38 @@ from game_enders import *
 # which row (top to bottom) you're in, and then which column you're in (left to right)
 
 
+def upgrade_pawns(board, your_pieces, their_pieces):
+    end_point = 0
+    end_point = 7 if your_pieces[0] == 1 else end_point
+    end_point = 0 if your_pieces[0] == 7 else end_point
+
+    col = np.where(board[end_point] == your_pieces[0])[0][0] if np.where(board[end_point] == your_pieces[0])[0].size > 0 else []
+
+    print(int(np.where(board[end_point] == your_pieces[0])[0][0]))
+
+    if col.size > 0:
+        letter = s_to_c[int(col)+1]
+        if board[end_point][col] == your_pieces[0]:
+            promoted = False
+            print(f"your pawn on {letter}{end_point+1} must promote")
+            while promoted == False:
+                upgrade_to = input("your pawn upgrades to:        (knight, rook, bishop, queen)\n")
+                promoted = True
+                if upgrade_to == "rook":
+                    board[end_point][col] = your_pieces[1]
+                elif upgrade_to == "knight":
+                    board[end_point][col] = your_pieces[2]
+                elif upgrade_to == "bishop":
+                    board[end_point][col] = your_pieces[3]
+                elif upgrade_to == "queen":
+                    board[end_point][col] = your_pieces[4]
+                else:
+                    print("that does not promote your pawn, retry")
+                    promoted = False
+
+    return board
+
+
 
 def turn(board, your_pieces, their_pieces, game_over):
 
@@ -26,6 +58,7 @@ def turn(board, your_pieces, their_pieces, game_over):
             print(f"{colourer('33')}you are in check, only moves that bring you out of check will be permitted\n{colourer(0)}")
 
         board = move(board, your_pieces, their_pieces)
+        board = upgrade_pawns(board, your_pieces, their_pieces)
 
 
     #if in_checkmate(board, your_pieces, their_pieces):

@@ -8,6 +8,12 @@ chess_letters_to_system = {
 }
 c_to_s = chess_letters_to_system
 
+system_to_chess_letters = {
+    1:"a", 2:"b", 3:"c", 4:"d",
+    5:"e", 6:"f", 7:"g", 8:"h"
+}
+s_to_c = system_to_chess_letters
+
 def where_to():
     num = 0
     target_col, target_row = "j", 9
@@ -53,26 +59,13 @@ def is_friendly_fire(target_col, target_row, board, your_pieces):
     if np.isin(board[target_row, target_col], your_pieces):
         return True
     elif not np.isin(board[target_row, target_col], your_pieces):
-        return False
-    
-def is_horizontal(row_pos, target_row):
-    if row_pos == target_row:
-        return True
-    else:
-        return False    
-    
-def is_vertical(col_pos, target_col):
-    if col_pos == target_col:
-        return True
-    else:
-        return False
+        return False 
     
 def is_diagonal(target_row, row_pos, target_col, col_pos):
     if np.abs(target_row - row_pos) == (np.abs(target_col - col_pos)):
         return True
     else:
         return False
-    
 
 def display(board, side_text, position):
     row, col, = 9, 9
