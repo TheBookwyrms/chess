@@ -4,6 +4,125 @@ from can_movements import *
 from error_messages import *
 
 
+# def display(board, piece):
+
+#     board = np.flipud(board)
+
+#     normal_nums_to_chess = {7:"♙", 8:"♖", 9:"♘", 10:"♗", 11:"♕", 12:"♔",
+#                      1:"♟", 2:"♜", 3:"♞", 4:"♝", 5:"♛", 6:"♚",
+#                      #0:"□"}
+#                      0:" "}
+#     inverted_nums_to_chess = {1:"♙", 2:"♖", 3:"♘", 4:"♗", 5:"♕", 6:"♔",
+#                      7:"♟", 8:"♜", 9:"♞", 10:"♝", 11:"♛", 12:"♚",
+#                      #0:"□"}
+#                      0:" "}
+
+#     chess_rows = np.array([8,7,6,5,4,3,2,1])
+#     chess_letters = np.array(["a","b","c","d","e","f","g","h"])
+#     side_text = [
+#         f'         {f"Piece  {colourer('01')}{piece:^4}{colourer(0)}  can move to:":^28}',
+#         f'         white pieces    black pieces',
+#         f'         ',
+#         f'         ',
+#         f'         ',
+#         f'         ',
+#         f'         ', 
+#         f'         ',
+#         f'']
+#     print('\n')
+
+#     one = 1
+#     print("      a  b  c  d  e  f  g  h\n")
+#     for chess_row, i, side in zip(chess_rows, range(len(board)), side_text):        
+
+#         lst = []
+#         for j, x in enumerate(board[i]):
+#             if (j + one)%2 != 0:
+#                 test = f' {colourer('07')}{inverted_nums_to_chess[int(x)]} {colourer(0)}'
+#             else:
+#                 test = f' {normal_nums_to_chess[int(x)]} '
+#             lst.append(test)
+#         one += 1
+#         #lst = [f"{f"\033[07m{nums_to_chess[int(x)]+"   "}\033[0m":4}" for x in board[i]]
+#         row_text = "".join(lst)
+#         print(f'{chess_row}    {row_text}    {chess_row}       {side}')
+#     print("\n      a  b  c  d  e  f  g  h")
+
+#     print("\n")
+
+
+def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces):
+    system_to_chess_letters = {
+    1:"a", 2:"b", 3:"c", 4:"d",
+    5:"e", 6:"f", 7:"g", 8:"h"
+}
+
+    piece = row_pos, col_pos
+    rows = np.array([0, 1, 2, 3, 4, 5, 6, 7])
+    cols = np.array([0, 1, 2, 3, 4, 5, 6, 7])
+    movement_list = [
+        pawn_movement,
+        rook_movement,
+        knight_movement,
+        bishop_movement,
+        queen_movement,
+        king_movement,
+        ]
+
+    where_can_moves = []
+
+    for row in rows:
+        for col in cols:
+            target = row, col
+            if not is_friendly_fire(col, row, board, your_pieces):
+                a = np.copy(board)
+                a[row, col] = a[piece]
+                a[piece] = 0
+                king_can_be_attacked = in_check(a, your_pieces, their_pieces)
+
+                if not np.isin(True, king_can_be_attacked):
+                    i = board[piece] - 1 # prepares piece numbers for calling movement_list
+                    i = (i) if (5 >= i) else (i - 6)
+                    if movement_list[int(i)](piece, target, board, your_pieces, their_pieces):
+                        where_can_moves.append(system_to_chess_letters[col+1]+str(row+1))
+
+    len_side_rows = [0, 0, 0, 0, 0, 0, 0]
+    for index, piece in enumerate(where_can_moves):
+        len_side_rows[index//3] += 1
+
+    side_text = [f'where piece   {colourer('01')}{colourer('04')}{colourer('32')}{position:^4}{colourer(0)}   can go:']
+
+    a_row = 0
+    for index, length in enumerate(len_side_rows):
+        if length == 3:
+            side_text.append("    "+f'{colourer('32')}{where_can_moves[0 + 3*a_row]:^8}{where_can_moves[1 + 3*a_row]:^8}{where_can_moves[2 + 3*a_row]:^8}{colourer(0)}')
+        if length == 2:
+            side_text.append("   "+f'{colourer('32')}{where_can_moves[-2]:^13}{where_can_moves[-1]:^13}{colourer(0)}')
+        if length == 1:
+            side_text.append("   "+f'{colourer('32')}{where_can_moves[-1]:^27}{colourer(0)}')
+        if length == 0:
+            side_text.append("")
+        a_row += 1
+
+    #print(side_text)
+
+    # side_text = [
+    #     f'where piece   {colourer('01')}{colourer('04')}{colourer('32')}{position:^4}{colourer(0)}   can go:',
+    #     f'         a',
+    #     f'         b',
+    #     f'         c',
+    #     f'         d',
+    #     f'         e',
+    #     f'         f', 
+    #     f'         g',
+    #     f'']
+
+    display(board, side_text, position)
+
+    return where_can_moves
+
+
+
 def move(board, your_pieces, their_pieces):
 
     num = 0
@@ -12,10 +131,11 @@ def move(board, your_pieces, their_pieces):
     while not can_move:
 
         print(error(num))
-        col_pos, row_pos = piece_to_move()
+        col_pos, row_pos, position = piece_to_move(board)
         num = 1
 
         if np.isin(board[row_pos, col_pos], your_pieces):
+            possibilities = where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces)
 
             num = 2
             target_row, target_col = where_to()

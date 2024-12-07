@@ -32,7 +32,21 @@ def setup():
     white_pieces = np.array([1,2,3,4,5,6])
     black_pieces = np.array([7,8,9,10,11,12])
 
+    inverted_nums_to_chess = {1:"♙", 2:"♖", 3:"♘", 4:"♗", 5:"♕", 6:"♔",
+                     7:"♟", 8:"♜", 9:"♞", 10:"♝", 11:"♛", 12:"♚",
+                     #0:"□"}
+                     0:" "}
 
+    side_text = [
+            f'         {"what each piece means":^28}',
+            "         white pieces    black pieces",
+            f'{"pawn":>6}   {inverted_nums_to_chess[7]:^12}    {inverted_nums_to_chess[1]:^12}',
+            f'{"rook":>6}   {inverted_nums_to_chess[8]:^12}    {inverted_nums_to_chess[2]:^12}',
+            f'{"knight":>6}   {inverted_nums_to_chess[9]:^12}    {inverted_nums_to_chess[3]:^12}',
+            f'{"bishop":>6}   {inverted_nums_to_chess[10]:^12}    {inverted_nums_to_chess[4]:^12}',
+            f'{"queen":>6}   {inverted_nums_to_chess[11]:^12}    {inverted_nums_to_chess[5]:^12}', 
+            f'{"king":>6}   {inverted_nums_to_chess[12]:^12}    {inverted_nums_to_chess[6]:^12}',
+            f'']
     
     # board = np.zeros((8,8))
     # board[7, 0] = 12
@@ -66,4 +80,4 @@ def setup():
     # board[0, 0] = 12
 
 
-    return board, white_pieces, black_pieces
+    return board, white_pieces, black_pieces, side_text

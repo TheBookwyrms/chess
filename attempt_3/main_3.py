@@ -33,55 +33,9 @@ def turn(board, your_pieces, their_pieces, game_over):
 
     return board, game_over
 
-def display(board):
-
-    board = np.flipud(board)
-
-    normal_nums_to_chess = {7:"♙", 8:"♖", 9:"♘", 10:"♗", 11:"♕", 12:"♔",
-                     1:"♟", 2:"♜", 3:"♞", 4:"♝", 5:"♛", 6:"♚",
-                     #0:"□"}
-                     0:" "}
-    inverted_nums_to_chess = {1:"♙", 2:"♖", 3:"♘", 4:"♗", 5:"♕", 6:"♔",
-                     7:"♟", 8:"♜", 9:"♞", 10:"♝", 11:"♛", 12:"♚",
-                     #0:"□"}
-                     0:" "}
-
-    chess_rows = np.array([8,7,6,5,4,3,2,1])
-    chess_letters = np.array(["a","b","c","d","e","f","g","h"])
-    side_text = [
-        f'         {"what each piece means":^28}',
-        "         white pieces    black pieces",
-        f'{"pawn":>6}   {inverted_nums_to_chess[7]:^12}    {inverted_nums_to_chess[1]:^12}',
-        f'{"rook":>6}   {inverted_nums_to_chess[8]:^12}    {inverted_nums_to_chess[2]:^12}',
-        f'{"knight":>6}   {inverted_nums_to_chess[9]:^12}    {inverted_nums_to_chess[3]:^12}',
-        f'{"bishop":>6}   {inverted_nums_to_chess[10]:^12}    {inverted_nums_to_chess[4]:^12}',
-        f'{"queen":>6}   {inverted_nums_to_chess[11]:^12}    {inverted_nums_to_chess[5]:^12}', 
-        f'{"king":>6}   {inverted_nums_to_chess[12]:^12}    {inverted_nums_to_chess[6]:^12}',
-        f'']
-    print('\n')
-
-    one = 1
-    print("      a  b  c  d  e  f  g  h\n")
-    for chess_row, i, side in zip(chess_rows, range(len(board)), side_text):        
-
-        lst = []
-        for j, x in enumerate(board[i]):
-            if (j + one)%2 != 0:
-                test = f' {colourer('07')}{inverted_nums_to_chess[int(x)]} {colourer(0)}'
-            else:
-                test = f' {normal_nums_to_chess[int(x)]} '
-            lst.append(test)
-        one += 1
-        #lst = [f"{f"\033[07m{nums_to_chess[int(x)]+"   "}\033[0m":4}" for x in board[i]]
-        row_text = "".join(lst)
-        print(f'{chess_row}    {row_text}    {chess_row}       {side}')
-    print("\n      a  b  c  d  e  f  g  h")
-
-    print("\n")
-
 
 def main():
-    board, white_pieces, black_pieces = setup()
+    board, white_pieces, black_pieces, side_text = setup()
 
     game_over = False
     whos_turn = 0
@@ -91,11 +45,11 @@ def main():
 
     while not game_over:
         if whos_turn%2 == 0:
-            display(board)
+            display(board, side_text, None)
             print(f"{colourer('04')}white turn{colourer(0)}")
             board, game_over = turn(board, white_pieces, black_pieces, game_over) # white turn
         else:
-            display(board)
+            display(board, side_text, None)
             print(f"{colourer('04')}black turn{colourer(0)}")
             board, game_over = turn(board, black_pieces, white_pieces, game_over) # black turn
 
