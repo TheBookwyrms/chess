@@ -35,22 +35,12 @@ def in_stalemate(board, stalemated, stalemater_pieces):
                                 i = board[piece] - 1 # prepares piece numbers for calling movement_list
                                 i = (i) if (5 >= i) else (i - 6)
                                 x_piece_can_move[xth_piece] = movement_list[int(i)](piece, target, board, stalemated, stalemater_pieces)
-                            
-                                # if x_piece_can_move[xth_piece] == True:
-                                #     #print(int(i), piece, target, board, stalemated, stalemater_pieces)
-                                #     print(a[row], king_can_be_attacked)
-                                #     print(piece, row, col, xth_piece)
-                                #     print(each_piece, piece, board[piece], board[row, col])           
            
             xth_piece += 1
-
-    #print(x_piece_can_move)
 
     for i in range(len(x_piece_can_move)):
         if i >= xth_piece:
             x_piece_can_move[i] = False
-
-    #print(x_piece_can_move)
 
     if not np.isin(True, x_piece_can_move):
         return True

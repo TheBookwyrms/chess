@@ -34,7 +34,7 @@ def where_to():
     target_row = int(target_row)-1
     return target_row, target_col
 
-def piece_to_move(board):
+def piece_to_move():
     num = 0
     col_pos, row_pos = "j", 9
     while not ((col_pos in ["a", "b", "c", "d", "e", "f", "g", "h"]) and (row_pos in [1, 2, 3, 4, 5, 6, 7, 8])):
@@ -58,14 +58,8 @@ def piece_to_move(board):
 def is_friendly_fire(target_col, target_row, board, your_pieces):
     if np.isin(board[target_row, target_col], your_pieces):
         return True
-    elif not np.isin(board[target_row, target_col], your_pieces):
-        return False 
-    
-def is_diagonal(target_row, row_pos, target_col, col_pos):
-    if np.abs(target_row - row_pos) == (np.abs(target_col - col_pos)):
-        return True
     else:
-        return False
+        return False 
 
 def display(board, side_text, position):
     row, col, = 9, 9

@@ -126,7 +126,7 @@ def move(board, your_pieces, their_pieces):
     while not can_move:
 
         print(error(num))
-        col_pos, row_pos, position = piece_to_move(board)
+        col_pos, row_pos, position = piece_to_move()
         num = 1
 
         if np.isin(board[row_pos, col_pos], your_pieces):
@@ -187,8 +187,8 @@ def pawn_movement(current, target, board, your_pieces, their_pieces):
 
     if int(board[target_row, target_col]) == 0:
         if (row_pos + one_jump == target_row) and (target_col == col_pos):
-            if not np.isin(board[target_row, target_col], their_pieces):
-                return True
+            #if not np.isin(board[target_row, target_col], their_pieces):
+            return True
 
         if row_pos == starting_point:            
             if (row_pos + two_jump == target_row) and (target_col == col_pos):
@@ -203,19 +203,11 @@ def pawn_movement(current, target, board, your_pieces, their_pieces):
     return False
 
         
-def rook_movement(current, target, board, your_pieces, _):
-    row_pos, col_pos = current
-    target_row, target_col = target
+def rook_movement(current, target, board, _, __):
 
-
-    if can_horizontal(current, target, board):
-        can_move = True
-                
-    elif can_vertical(current, target, board):
-        can_move = True
-
-    else:
-        can_move = False  
+    can_move = False
+    can_move = can_horizontal(current, target, board) if can_move == False else True
+    can_move = can_vertical(current, target, board) if can_move == False else True
     
     return can_move
 
@@ -233,34 +225,20 @@ def knight_movement(current, target, board, your_pieces, _):
     return False 
 
 
-def bishop_movement(current, target, board, your_pieces, _):
-    row_pos, col_pos = current
-    target_row, target_col = target
+def bishop_movement(current, target, board, _, __):
 
-    if is_diagonal(target_row, row_pos, target_col, col_pos):
-        can_move = can_diagonal(current, target, board)
-
-    else:
-        can_move = False
-    
+    can_move = False
+    can_move = can_diagonal(current, target, board) if can_move == False else True
+        
     return can_move 
 
 
-def queen_movement(current, target, board, your_pieces, _):
-    row_pos, col_pos = current
-    target_row, target_col = target
+def queen_movement(current, target, board, _, __):
 
-    if is_diagonal(target_row, row_pos, target_col, col_pos):
-        can_move = can_diagonal(current, target, board)
-            
-    elif can_horizontal(current, target, board):
-        can_move = True
-            
-    elif can_vertical(current, target, board):
-        can_move = True
-
-    else:
-        can_move = False 
+    can_move = False
+    can_move = can_diagonal(current, target, board) if can_move == False else True
+    can_move = can_horizontal(current, target, board) if can_move == False else True
+    can_move = can_vertical(current, target, board) if can_move == False else True
     
     return can_move   
     

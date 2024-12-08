@@ -16,9 +16,7 @@ def upgrade_pawns(board, your_pieces, their_pieces):
     end_point = 7 if your_pieces[0] == 1 else end_point
     end_point = 0 if your_pieces[0] == 7 else end_point
 
-    col = np.where(board[end_point] == your_pieces[0])[0][0] if np.where(board[end_point] == your_pieces[0])[0].size > 0 else []
-
-    print(int(np.where(board[end_point] == your_pieces[0])[0][0]))
+    col = np.where(board[end_point] == your_pieces[0])[0][0] if np.where(board[end_point] == your_pieces[0])[0].size > 0 else np.array([])
 
     if col.size > 0:
         letter = s_to_c[int(col)+1]
