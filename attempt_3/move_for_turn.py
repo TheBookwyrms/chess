@@ -4,53 +4,6 @@ from can_movements import *
 from error_messages import *
 
 
-# def display(board, piece):
-
-#     board = np.flipud(board)
-
-#     normal_nums_to_chess = {7:"♙", 8:"♖", 9:"♘", 10:"♗", 11:"♕", 12:"♔",
-#                      1:"♟", 2:"♜", 3:"♞", 4:"♝", 5:"♛", 6:"♚",
-#                      #0:"□"}
-#                      0:" "}
-#     inverted_nums_to_chess = {1:"♙", 2:"♖", 3:"♘", 4:"♗", 5:"♕", 6:"♔",
-#                      7:"♟", 8:"♜", 9:"♞", 10:"♝", 11:"♛", 12:"♚",
-#                      #0:"□"}
-#                      0:" "}
-
-#     chess_rows = np.array([8,7,6,5,4,3,2,1])
-#     chess_letters = np.array(["a","b","c","d","e","f","g","h"])
-#     side_text = [
-#         f'         {f"Piece  {colourer('01')}{piece:^4}{colourer(0)}  can move to:":^28}',
-#         f'         white pieces    black pieces',
-#         f'         ',
-#         f'         ',
-#         f'         ',
-#         f'         ',
-#         f'         ', 
-#         f'         ',
-#         f'']
-#     print('\n')
-
-#     one = 1
-#     print("      a  b  c  d  e  f  g  h\n")
-#     for chess_row, i, side in zip(chess_rows, range(len(board)), side_text):        
-
-#         lst = []
-#         for j, x in enumerate(board[i]):
-#             if (j + one)%2 != 0:
-#                 test = f' {colourer('07')}{inverted_nums_to_chess[int(x)]} {colourer(0)}'
-#             else:
-#                 test = f' {normal_nums_to_chess[int(x)]} '
-#             lst.append(test)
-#         one += 1
-#         #lst = [f"{f"\033[07m{nums_to_chess[int(x)]+"   "}\033[0m":4}" for x in board[i]]
-#         row_text = "".join(lst)
-#         print(f'{chess_row}    {row_text}    {chess_row}       {side}')
-#     print("\n      a  b  c  d  e  f  g  h")
-
-#     print("\n")
-
-
 def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces):
     piece = row_pos, col_pos
     rows = np.array([0, 1, 2, 3, 4, 5, 6, 7])
@@ -75,6 +28,14 @@ def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces)
                 a[piece] = 0
                 king_can_be_attacked = in_check(a, your_pieces, their_pieces)
 
+                if (target == (4, 3)):
+                    k, c = int(target[0]), int(target[1])
+                    target = (k, c)
+                    a = pawn_movement(piece, target, board, your_pieces, their_pieces)
+                    print()
+                    print(piece, target, board[piece], board[target], int(board[target]) == 0, "\n", board, your_pieces, their_pieces, a)
+                    print()
+
                 if not np.isin(True, king_can_be_attacked):
                     i = board[piece] - 1 # prepares piece numbers for calling movement_list
                     i = (i) if (5 >= i) else (i - 6)
@@ -98,19 +59,6 @@ def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces)
         if length == 0:
             side_text.append("")
         a_row += 1
-
-    #print(side_text)
-
-    # side_text = [
-    #     f'where piece   {colourer('01')}{colourer('04')}{colourer('32')}{position:^4}{colourer(0)}   can go:',
-    #     f'         a',
-    #     f'         b',
-    #     f'         c',
-    #     f'         d',
-    #     f'         e',
-    #     f'         f', 
-    #     f'         g',
-    #     f'']
 
     display(board, side_text, position)
 
@@ -181,20 +129,30 @@ def pawn_movement(current, target, board, your_pieces, their_pieces):
     row_pos, col_pos = current
     target_row, target_col = target
 
+    '''
+    row_pos = 6, col_pos = 3
+    target_row = 4, target_col = 3
+    '''
+
     starting_point, one_jump, two_jump = 0, 0, 0
     (starting_point, one_jump, two_jump) = (1, 1, 2) if board[row_pos, col_pos] == 1 else (starting_point, one_jump, two_jump)
     (starting_point, one_jump, two_jump) = (6, -1, -2) if board[row_pos, col_pos] == 7 else (starting_point, one_jump, two_jump)
 
+    '''
+    board[row_pos, col_pos] = 7
+    board[target_row, target_col] = 0
+    starting_point, one_jump, two_jump = 6, -1, -2
+    '''
+
     if int(board[target_row, target_col]) == 0:
         if (row_pos + one_jump == target_row) and (target_col == col_pos):
-            #if not np.isin(board[target_row, target_col], their_pieces):
             return True
 
         if row_pos == starting_point:            
-            if (row_pos + two_jump == target_row) and (target_col == col_pos):
-                if not np.isin(board[target_row, target_col], their_pieces):
-                    if not is_friendly_fire(target_col, target_row-1, board, your_pieces):
-                        return True
+            if ((row_pos + two_jump == target_row) and
+                (target_col == col_pos) and
+                (board[target_row-one_jump, target_col] == 0)):
+                return True
             
     if (row_pos + one_jump == target_row) and ((target_col == col_pos + one_jump) or (target_col == col_pos - one_jump)):
         if np.isin(board[target_row, target_col], their_pieces):
@@ -271,28 +229,20 @@ def in_check(board, your_pieces, their_pieces):
 
     king_row, king_col = np.where(board == your_pieces[-1])
     your_king = int(king_row), int(king_col)
-
-
-
     
     for each_piece in their_pieces: # each_piece is number of piece
+        xth_piece = 0
         that_piece_row, that_piece_col = np.where(board == each_piece)
         for piece in zip(that_piece_row, that_piece_col): # piece is position for every piece
             if can_be_attacked[xth_piece] == False:
-                #print(each_piece, type(each_piece), each_piece == 7)
                 if each_piece != 0:
-                    #print(each_piece, type(each_piece), each_piece == 7)
                     i = (each_piece-1) if (5 >= each_piece) else (each_piece -1 - 6)
                     can_be_attacked[xth_piece] = movement_list[int(i)](piece, your_king, board, their_pieces, your_pieces)
-                    #if each_piece == 7:
-                     #   print(piece, your_king, board, their_pieces, your_pieces, movement_list[int(i)](piece, your_king, board, their_pieces, your_pieces))
 
                 if each_piece == their_pieces[5]: # king
                     if np.abs(king_row-piece[0])<=1 and np.abs(king_col-piece[1])<=1:
                         can_be_attacked[xth_piece] = True
 
-            #print(can_be_attacked)
             xth_piece += 1
     
-    #print(can_be_attacked)
     return can_be_attacked

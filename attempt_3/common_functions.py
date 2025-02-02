@@ -85,9 +85,9 @@ def display(board, side_text, position):
 
     one = 1
     print("      a  b  c  d  e  f  g  h\n")
-    for chess_row, i, side in zip(chess_rows, range(len(board)), side_text):        
+    for chess_row, i, side in zip(chess_rows, range(len(board)), side_text):
+        lst = []        
         if i != row:
-            lst = []
             for j, x in enumerate(board[i]):
                 if (j + one)%2 != 0:
                     test = f' {colourer('07')}{inverted_nums_to_chess[int(x)]} {colourer(0)}'
@@ -95,7 +95,6 @@ def display(board, side_text, position):
                     test = f' {normal_nums_to_chess[int(x)]} '
                 lst.append(test)
         else:
-            lst = []
             for j, x in enumerate(board[i]):
                 if j != col:
                     if (j + one)%2 != 0:
@@ -110,7 +109,6 @@ def display(board, side_text, position):
                 lst.append(test)
 
         one += 1
-        #lst = [f"{f"\033[07m{nums_to_chess[int(x)]+"   "}\033[0m":4}" for x in board[i]]
         row_text = "".join(lst)
         print(f'{chess_row}    {row_text}    {chess_row}       {side}')
     print("\n      a  b  c  d  e  f  g  h")

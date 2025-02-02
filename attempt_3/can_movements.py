@@ -9,13 +9,11 @@ def can_horizontal(current, target, board):
         
         for i in range(col_pos + plus_minus_one, target_col + 0, plus_minus_one):
             if int(board[target_row][i]) != 0:
-                #print("invalid move, try again")
                 return False     
         
         return True
     return False
     
-
 
 def can_vertical(current, target, board):
     row_pos, col_pos = current
@@ -26,7 +24,6 @@ def can_vertical(current, target, board):
 
         for i in range(row_pos + plus_minus_one, target_row + 0, plus_minus_one):
             if int(board[i][target_col]) != 0:
-                #print("invalid move, try again")
                 return False
         
         return True

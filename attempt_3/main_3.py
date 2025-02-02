@@ -6,6 +6,7 @@ from game_enders import *
 
 # TODO: add en passant
 # TODO: add castling
+# TODO: fix pawn error: after e2-e4, b7-b5 doesn't work
 
 
 # which row (top to bottom) you're in, and then which column you're in (left to right)
