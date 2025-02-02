@@ -28,14 +28,6 @@ def where_can_move(board, position, col_pos, row_pos, your_pieces, their_pieces)
                 a[piece] = 0
                 king_can_be_attacked = in_check(a, your_pieces, their_pieces)
 
-                if (target == (4, 3)):
-                    k, c = int(target[0]), int(target[1])
-                    target = (k, c)
-                    a = pawn_movement(piece, target, board, your_pieces, their_pieces)
-                    print()
-                    print(piece, target, board[piece], board[target], int(board[target]) == 0, "\n", board, your_pieces, their_pieces, a)
-                    print()
-
                 if not np.isin(True, king_can_be_attacked):
                     i = board[piece] - 1 # prepares piece numbers for calling movement_list
                     i = (i) if (5 >= i) else (i - 6)
@@ -129,20 +121,9 @@ def pawn_movement(current, target, board, your_pieces, their_pieces):
     row_pos, col_pos = current
     target_row, target_col = target
 
-    '''
-    row_pos = 6, col_pos = 3
-    target_row = 4, target_col = 3
-    '''
-
     starting_point, one_jump, two_jump = 0, 0, 0
     (starting_point, one_jump, two_jump) = (1, 1, 2) if board[row_pos, col_pos] == 1 else (starting_point, one_jump, two_jump)
     (starting_point, one_jump, two_jump) = (6, -1, -2) if board[row_pos, col_pos] == 7 else (starting_point, one_jump, two_jump)
-
-    '''
-    board[row_pos, col_pos] = 7
-    board[target_row, target_col] = 0
-    starting_point, one_jump, two_jump = 6, -1, -2
-    '''
 
     if int(board[target_row, target_col]) == 0:
         if (row_pos + one_jump == target_row) and (target_col == col_pos):
